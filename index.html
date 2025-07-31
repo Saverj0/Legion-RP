@@ -171,25 +171,21 @@
 
       // Mock data
       const staffMembers = [
-        { id: 1, name: "Marcus", role: "Fondatore", rank: "CEO", avatar: "https://placehold.co/80/3b82f6/ffffff?text=M", bio: "Leader visionario con 5 anni di esperienza nel mondo RP", achievements: ["Fondatore", "Strategia"] },
-        { id: 2, name: "Sophia", role: "Admin Senior", rank: "ADM", avatar: "https://placehold.co/80/ef4444/ffffff?text=S", bio: "Gestisce le operazioni quotidiane del server", achievements: ["Moderazione", "Eventi"] },
-        { id: 3, name: "Alex", role: "Moderatore", rank: "MOD", avatar: "https://placehold.co/80/10b981/ffffff?text=A", bio: "Esperto nel mantenere l'ordine nel server", achievements: ["Supporto", "Regole"] },
-        { id: 4, name: "Jordan", role: "Supporto Tecnico", rank: "SUP", avatar: "https://placehold.co/80/f59e0b/ffffff?text=J", bio: "Risoluzione di problemi tecnici e bug", achievements: ["Tecnico", "Assistenza"] },
-        { id: 5, name: "Taylor", role: "Event Manager", rank: "EVT", avatar: "https://placehold.co/80/8b5cf6/ffffff?text=T", bio: "Organizza eventi memorabili per la community", achievements: ["Eventi", "Creatività"] },
-        { id: 6, name: "Riley", role: "Community Manager", rank: "CM", avatar: "https://placehold.co/80/ec4899/ffffff?text=R", bio: "Ponte tra la community e lo staff", achievements: ["Comunicazione", "Feedback"] }
+        { id: 1, name: "Saverjo_", role: "Server Direction®", rank: "Creator", avatar: "https://images-ext-1.discordapp.net/external/5t2w4t2sSHF-XURtaQem0dMftCz2pWwUwsLHCBlWFaM/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/631480067213492238/c09fd6afbad96af72363b0dacdf4d369.png?format=webp&quality=lossless&width=192&height=192", bio: "Molta esperienza nell RP da console, Founder del Prime RP Bor e Dev", achievements: ["Ownership", "Developer"] },
+        { id: 2, name: "Sibillo", role: "Server Direction®", rank: "CEO", avatar: "https://images-ext-1.discordapp.net/external/UoLBl_4w9sjWdJuCuILoxHemfqKm5XTLx99Mg9iTXNI/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1261436710835851379/e911ca506c77c18eb8e3579a2373a3c9.png?format=webp&quality=lossless&width=192&height=192", bio: "Gestisce le operazioni quotidiane del server", achievements: [""] },
+        { id: 3, name: "Dani", role: "Server Direction®", rank: "CEO", avatar: "https://images-ext-1.discordapp.net/external/mqQnT7rA6v_iOuCfBblOC6mfHOg76lnQFCXy8ClysMk/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1125499490531545179/143b121ea93e77ab6f948b204508f1e8.png?format=webp&quality=lossless&width=192&height=192", bio: "Esperto nel mantenere l'ordine nel server", achievements: [""] },
+        { id: 4, name: "Manito", role: "Server Direction®", rank: "CEO", avatar: "https://images-ext-1.discordapp.net/external/HU_1-Jz1quCPAyHdIK2-90PmOWNCdSIEVU6e3o6UeF4/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/867941531691151360/61a304b16677e856116b9368e97063be.png?format=webp&quality=lossless&width=192&height=192", bio: "OG Player", achievements: [""] },
+        { id: 5, name: "Giuse", role: "Server Direction®", rank: "COO", avatar: "https://images-ext-1.discordapp.net/external/AL-LDZWPXS0KV5LXv8t0s7Mi7sxWDSkLU-PzB6we3Dg/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1258390461396291614/a_048510b2861e53ff22669d38fc41f9af.gif?width=422&height=422", bio: "Organizza eventi memorabili per la community", achievements: [""] },
+        { id: 6, name: "kaaeza", role: "Server Direction®", rank: "Coordinator", avatar: "https://images-ext-1.discordapp.net/external/0YjDQ9o9C6rPxzbfCC_qbgoti-kRSCcSoQwzZEcaLU8/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/822411819456921650/1a66a3b0559c58711f7337346a38ec6c.png?format=webp&quality=lossless&width=194&height=194", bio: "Coordinator", achievements: ["Developer"] }
       ];
 
       const partnerships = [
-        { id: 1, name: "GTA RP Italy", logo: "https://placehold.co/100/dc2626/ffffff?text=GRI", description: "Comunità italiana di RP di alto livello con oltre 3000 membri", url: "https://discord.gg/gtarpitaly", rating: 4.8 },
-        { id: 2, name: "RolePlay Network", logo: "https://placehold.co/100/059669/ffffff?text=RPN", description: "Network internazionale di server RP con partnership globali", url: "https://discord.gg/rpn", rating: 4.7 },
-        { id: 3, name: "PS4 RP Community", logo: "https://placehold.co/100/7c3aed/ffffff?text=PS4RP", description: "Comunità dedicata esclusivamente ai giocatori PS4", url: "https://discord.gg/ps4rp", rating: 4.5 },
-        { id: 4, name: "Italian RolePlay", logo: "https://placehold.co/100/ea580c/ffffff?text=IRP", description: "Piattaforma di eventi RP in Italia con eventi settimanali", url: "https://discord.gg/italianrp", rating: 4.6 }
+        { id: 1, name: "RolePlay Community", logo: "https://images-ext-1.discordapp.net/external/7v6Hx217G_3fBzT_amrANjIbKNMx1Ef_wdD_NZD0kBY/%3Fsize%3D4096/https/cdn.discordapp.com/icons/838747875474276392/9716f19ce04288f6adc56b2d7d41feb2.png?format=webp&quality=lossless&width=192&height=192", description: "La vera Roleplay Community", url: "https://discord.gg/2dEeexHcnW", rating: 4.8 },
+        { id: 2, name: "Prime RP Bot", logo: "https://images-ext-1.discordapp.net/external/d_2df_jUsletkBbMLaJHbT7C6w43kwjui5WOgGoV8c4/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1308506841801822220/741dfdc823aeb7e2abdc0af66b480275.png?format=webp&quality=lossless&width=587&height=587", description: "Bot per il roleplay da Console", url: "https://discord.gg/68zcbdeGA4", rating: 4.9 },
       ];
 
       const legalInfo = {
         owner: "Legion RP Team",
-        address: "Via Roma 123, Milano, Italia",
-        vat: "IT12345678901",
         terms: "Utilizzando questo sito web, accetti i nostri termini e condizioni. Il server è un progetto non ufficiale e non affiliato a Rockstar Games.",
         privacy: "Rispettiamo la tua privacy. I dati personali raccolti sono utilizzati esclusivamente per la gestione del server e della community.",
         copyright: "© 2025 Legion RP. Tutti i diritti riservati.",
