@@ -585,6 +585,7 @@ const App = () => {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           href="#"
+                          onClick={(e) => e.preventDefault()}
                           className="inline-flex items-center space-x-2 border-2 border-gray-600 hover:border-gray-500 text-gray-300 hover:text-white font-bold py-3 px-6 rounded-full transition-all duration-200"
                         >
                           <span>Requisiti</span>
@@ -650,6 +651,7 @@ const App = () => {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           href="#"
+                          onClick={(e) => e.preventDefault()}
                           className="inline-flex items-center space-x-2 border-2 border-gray-600 hover:border-gray-500 text-gray-300 hover:text-white font-bold py-3 px-6 rounded-full transition-all duration-200"
                         >
                           <span>Linee Guida</span>
@@ -801,7 +803,10 @@ const App = () => {
                 <li>
                   <a
                     href="#"
-                    onClick={() => setActiveSection("legal")}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveSection("legal");
+                    }}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Termini e Condizioni
@@ -810,7 +815,10 @@ const App = () => {
                 <li>
                   <a
                     href="#"
-                    onClick={() => setActiveSection("legal")}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveSection("legal");
+                    }}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Privacy Policy
@@ -819,7 +827,10 @@ const App = () => {
                 <li>
                   <a
                     href="#"
-                    onClick={() => setActiveSection("legal")}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveSection("legal");
+                    }}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Disclaimer
