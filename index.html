@@ -1,888 +1,678 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Legion RP - Server GTA 5 Online PS4</title>
+
   <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#ef4444',
-            secondary: '#3b82f6'
-          }
-        }
-      }
-    }
-  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
-    
-    .gradient-text {
-      background: linear-gradient(90deg, #ef4444 0%, #3b82f6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+    body{
+      font-family:'Inter',sans-serif;
+      overflow-x:hidden;
+      background:#000;
+      color:white;
     }
-    
-    .glow-border {
-      box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
-      transition: all 0.3s ease;
+
+    .gradient-text{
+      background:linear-gradient(90deg,#ef4444 0%,#3b82f6 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
-    
-    .glow-border:hover {
-      box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+
+    .glow-border{
+      box-shadow:0 0 15px rgba(239,68,68,0.35);
+      transition:0.3s;
     }
-    
-    .card-hover {
-      transition: all 0.3s ease;
+
+    .glow-border:hover{
+      box-shadow:0 0 25px rgba(239,68,68,0.6);
+      transform:translateY(-2px);
     }
-    
-    .card-hover:hover {
-      transform: translateY(-5px);
+
+    .card-hover{
+      transition:0.3s;
     }
-    
-    .animate-pulse-slow {
-      animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+    .card-hover:hover{
+      transform:translateY(-6px);
     }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+
+    .logo-spin{
+      animation:spin 14s linear infinite;
     }
-    
-    .logo-spin {
-      animation: spin 15s linear infinite;
+
+    @keyframes spin{
+      from{transform:rotate(0deg);}
+      to{transform:rotate(360deg);}
     }
-    
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+
+    .animate-pulse-slow{
+      animation:pulse 3s infinite;
     }
-    
-    .star-animation {
-      animation: starBlink 2s infinite alternate;
+
+    @keyframes pulse{
+      0%,100%{opacity:1;}
+      50%{opacity:.7;}
     }
-    
-    @keyframes starBlink {
-      from { opacity: 1; }
-      to { opacity: 0.5; }
+
+    .star-animation{
+      animation:starBlink 1.5s infinite alternate;
+    }
+
+    @keyframes starBlink{
+      from{opacity:1;}
+      to{opacity:.5;}
+    }
+
+    .bg-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,.88), rgba(0,0,0,.75));
+    }
+
+    .line-clamp-2{
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
     }
   </style>
 </head>
-<body class="bg-black text-white min-h-screen">
-  <div id="root"></div>
 
-  <script type="text/babel">
-    // Icone SVG necessarie
-    const HomeIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-      </svg>
-    );
-    
-    const UsersIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-        <circle cx="9" cy="7" r="4"></circle>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-      </svg>
-    );
-    
-    const HandshakeIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M11 16h1.5a.5.5 0 0 0 .5-.5v-2.87a.5.5 0 0 1 .22-.4L16 10.53a.5.5 0 0 1 .88.37V14a2 2 0 1 0 4 0v-2a2 2 0 1 0-4 0v.16a4 4 0 0 1-1.22-1.38l-1.8-2.7a6.02 6.02 0 0 0-2.3-1.72l-.6-.25h-.05a2 2 0 0 0-1.78.6L9 5.98a10.94 10.94 0 0 0-1.48 2.15 4 4 0 0 0-.25 3.3V12a6 6 0 0 1-3 5.19"></path>
-        <path d="m18 15-1.75 5-1.5-3.5"></path>
-        <path d="m11 16 1.75-5 1.5 3.5"></path>
-      </svg>
-    );
-    
-    const FileTextIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-        <polyline points="14 2 14 8 20 8"></polyline>
-        <line x1="16" y1="13" x2="8" y2="13"></line>
-        <line x1="16" y1="17" x2="8" y2="17"></line>
-        <polyline points="10 9 9 9 8 9"></polyline>
-      </svg>
-    );
-    
-    const ChevronRightIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-    );
-    
-    const DiscordIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M21.7645 1.80995C20.1517 1.05995 18.4494 0.499946 16.6781 0.159946C14.9256 -0.150054 13.1171 -0.0500541 11.3845 0.419946C11.2198 0.469946 11.0461 0.389946 10.9535 0.229946C10.4493 0.0299459 9.92719 -0.0900541 9.40509 0.0199459C7.68148 0.379946 6.01526 0.989946 4.43847 1.81995C2.62102 2.75995 0.945811 4.00995 0.111702 6.16995C0.0280833 6.39995 -0.00453516 6.64995 0.0134684 6.88995C1.3528 8.78995 2.48745 10.29 3.46637 11.46C3.56799 11.58 3.53537 11.76 3.41575 11.84C2.54563 12.44 1.69351 12.96 0.877397 13.4C-0.129514 15.47 -0.363498 17.58 0.210609 19.64C0.294228 19.94 0.546197 20.15 0.854175 20.19C2.5204 20.45 4.19561 20.21 5.7544 19.5C6.02437 19.37 6.32335 19.5 6.443 19.77C6.72197 20.41 7.02995 21.02 7.36492 21.6C7.46654 21.77 7.66726 21.84 7.84101 21.79C9.53424 21.3 11.147 21.07 12.7418 21.07C14.3366 21.07 15.9494 21.3 17.6426 21.79C17.8164 21.84 18.0171 21.77 18.1187 21.6C18.4537 21.02 18.7617 20.41 19.0406 19.77C19.1603 19.5 19.4592 19.37 19.7292 19.5C21.288 20.21 22.9632 20.45 24.6294 20.19C24.9374 20.15 25.1894 19.94 25.273 19.64C25.8471 17.58 25.6131 15.47 24.6062 13.4C23.7811 12.95 22.929 12.44 22.0589 11.84C21.9392 11.76 21.9066 11.58 22.0082 11.46C22.9871 10.29 24.1218 8.78995 25.4611 6.88995C25.4881 6.64995 25.4555 6.39995 25.3719 6.16995C24.5378 4.00995 22.8626 2.75995 21.0451 1.80995C20.9705 1.76995 20.8959 1.74995 20.8123 1.73995C20.6927 1.71995 20.573 1.75995 20.4894 1.84995C20.4058 1.93995 20.3642 2.06995 20.3732 2.19995C20.4748 3.55995 20.3642 4.91995 20.0562 6.23995C20.0116 6.43995 20.1132 6.64995 20.296 6.72995C21.736 7.32995 22.9903 8.17995 24.0062 9.18995C24.0898 9.26995 24.1134 9.39995 24.0778 9.51995C23.6176 11.04 23.0017 12.5 22.2408 13.85C22.1572 14.01 22.2408 14.2 22.4055 14.24C23.2489 14.47 24.056 14.77 24.8169 15.12C24.9456 15.18 25.0832 15.13 25.1578 15.02C25.6979 14.16 26.1581 13.24 26.5284 12.28C26.7291 11.74 26.8939 11.18 27.0135 10.61C27.2232 9.59995 27.3248 8.56995 27.3158 7.53995C27.3068 5.90995 26.9898 4.33995 26.3829 2.90995C26.2633 2.62995 26.0113 2.45995 25.7244 2.41995C24.394 2.22995 23.0726 2.11995 21.7604 2.08995C21.5597 2.07995 21.377 2.18995 21.2934 2.37995C21.2654 2.28995 21.2374 2.19995 21.2004 2.10995C21.1248 1.93995 20.9511 1.85995 20.7773 1.82995C20.8519 1.81995 20.9265 1.80995 21.0011 1.80995C21.1569 1.80995 21.3126 1.80995 21.4684 1.81995C21.6241 1.82995 21.7709 1.83995 21.9176 1.85995C21.843 1.84995 21.7684 1.83995 21.6938 1.82995C21.6192 1.81995 21.5446 1.81995 21.4699 1.80995C21.3953 1.80995 21.3207 1.80995 21.2461 1.80995C21.1715 1.80995 21.0969 1.80995 21.0223 1.80995C20.9477 1.80995 20.8731 1.80995 20.7985 1.80995C20.8731 1.80995 20.9477 1.80995 21.0223 1.80995C21.0969 1.80995 21.1715 1.80995 21.2461 1.80995C21.3207 1.80995 21.3953 1.80995 21.4699 1.80995C21.5446 1.80995 21.6192 1.81995 21.6938 1.82995C21.7684 1.83995 21.843 1.84995 21.9176 1.85995C21.7709 1.83995 21.6241 1.82995 21.4684 1.81995C21.3126 1.80995 21.1569 1.80995 21.0011 1.80995C20.9265 1.80995 20.8519 1.80995 20.7773 1.82995C20.7027 1.83995 20.6281 1.85995 20.5535 1.87995"></path>
-      </svg>
-    );
-    
-    const ArrowRightIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-        <polyline points="12 5 19 12 12 19"></polyline>
-      </svg>
-    );
-    
-    const StarIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-      </svg>
-    );
-    
-    const ShieldIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-      </svg>
-    );
-    
-    const BriefcaseIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-      </svg>
-    );
-    
-    const AwardIcon = (props) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <circle cx="12" cy="8" r="7"></circle>
-        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-      </svg>
-    );
+<body>
+<div id="root"></div>
 
-    const App = () => {
-      const [activeSection, setActiveSection] = React.useState("home");
-      const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-      const [isLoading, setIsLoading] = React.useState(true);
+<script type="text/babel">
 
-      // Mock data
-      const staffMembers = [
-        { id: 1, name: "Saverjo_", role: "Server Direction®", rank: "Creator", avatar: "https://images-ext-1.discordapp.net/external/5t2w4t2sSHF-XURtaQem0dMftCz2pWwUwsLHCBlWFaM/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/631480067213492238/c09fd6afbad96af72363b0dacdf4d369.png?format=webp&quality=lossless&width=192&height=192", bio: "Molta esperienza nell RP da console, Founder del Prime RP Bor e Dev", achievements: ["Ownership", "Developer"] },
-        { id: 2, name: "Sibillo", role: "Server Direction®", rank: "CEO", avatar: "https://images-ext-1.discordapp.net/external/UoLBl_4w9sjWdJuCuILoxHemfqKm5XTLx99Mg9iTXNI/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1261436710835851379/e911ca506c77c18eb8e3579a2373a3c9.png?format=webp&quality=lossless&width=192&height=192", bio: "Gestisce le operazioni quotidiane del server", achievements: [""] },
-        { id: 3, name: "Dani", role: "Server Direction®", rank: "CEO", avatar: "https://images-ext-1.discordapp.net/external/mqQnT7rA6v_iOuCfBblOC6mfHOg76lnQFCXy8ClysMk/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1125499490531545179/143b121ea93e77ab6f948b204508f1e8.png?format=webp&quality=lossless&width=192&height=192", bio: "Esperto nel mantenere l'ordine nel server", achievements: [""] },
-        { id: 4, name: "Manito", role: "Server Direction®", rank: "CEO", avatar: "https://images-ext-1.discordapp.net/external/HU_1-Jz1quCPAyHdIK2-90PmOWNCdSIEVU6e3o6UeF4/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/867941531691151360/61a304b16677e856116b9368e97063be.png?format=webp&quality=lossless&width=192&height=192", bio: "OG Player", achievements: [""] },
-        { id: 5, name: "Giuse", role: "Server Direction®", rank: "COO", avatar: "https://images-ext-1.discordapp.net/external/AL-LDZWPXS0KV5LXv8t0s7Mi7sxWDSkLU-PzB6we3Dg/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1258390461396291614/a_048510b2861e53ff22669d38fc41f9af.gif?width=422&height=422", bio: "Organizza eventi memorabili per la community", achievements: [""] },
-        { id: 6, name: "kaaeza", role: "Server Direction®", rank: "Coordinator", avatar: "https://images-ext-1.discordapp.net/external/0YjDQ9o9C6rPxzbfCC_qbgoti-kRSCcSoQwzZEcaLU8/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/822411819456921650/1a66a3b0559c58711f7337346a38ec6c.png?format=webp&quality=lossless&width=194&height=194", bio: "Coordinator", achievements: ["Developer"] }
-      ];
+const HomeIcon = (props) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
+<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+<polyline points="9 22 9 12 15 12 15 22"></polyline>
+</svg>
+);
 
-      const partnerships = [
-        { id: 1, name: "RolePlay Community", logo: "https://images-ext-1.discordapp.net/external/7v6Hx217G_3fBzT_amrANjIbKNMx1Ef_wdD_NZD0kBY/%3Fsize%3D4096/https/cdn.discordapp.com/icons/838747875474276392/9716f19ce04288f6adc56b2d7d41feb2.png?format=webp&quality=lossless&width=192&height=192", description: "La vera Roleplay Community", url: "https://discord.gg/2dEeexHcnW", rating: 4.8 },
-        { id: 2, name: "Prime RP Bot", logo: "https://images-ext-1.discordapp.net/external/d_2df_jUsletkBbMLaJHbT7C6w43kwjui5WOgGoV8c4/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1308506841801822220/741dfdc823aeb7e2abdc0af66b480275.png?format=webp&quality=lossless&width=587&height=587", description: "Bot per il roleplay da Console", url: "https://discord.gg/68zcbdeGA4", rating: 4.9 },
-      ];
+const UsersIcon = (props) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+<circle cx="9" cy="7" r="4"></circle>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+</svg>
+);
 
-      const legalInfo = {
-        owner: "Legion RP Team",
-        terms: "Utilizzando questo sito web, accetti i nostri termini e condizioni. Il server è un progetto non ufficiale e non affiliato a Rockstar Games.",
-        privacy: "Rispettiamo la tua privacy. I dati personali raccolti sono utilizzati esclusivamente per la gestione del server e della community.",
-        copyright: "© 2025 Legion RP. Tutti i diritti riservati.",
-        disclaimer: "Legion RP non è in alcun modo affiliato con Rockstar Games, Take-Two Interactive Software, Inc. o qualsiasi altra entità che detiene i diritti su Grand Theft Auto. Grand Theft Auto e GTA sono marchi registrati di Take-Two Interactive Software, Inc."
-      };
+const HandshakeIcon = (props) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
+<path d="M11 16h1.5"></path>
+</svg>
+);
 
-      // Navigation items with icons
-      const navItems = [
-        { id: "home", label: "Home", icon: HomeIcon, activeColor: "text-red-500" },
-        { id: "staff", label: "Staff", icon: UsersIcon, activeColor: "text-blue-500" },
-        { id: "partnerships", label: "Partnership", icon: HandshakeIcon, activeColor: "text-green-500" },
-        { id: "legal", label: "Info Legali", icon: FileTextIcon, activeColor: "text-purple-500" }
-      ];
+const FileTextIcon = (props) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
+<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+</svg>
+);
 
-      // Simulate loading state
-      React.useEffect(() => {
-        const timer = setTimeout(() => {
-          setIsLoading(false);
-        }, 800);
-        return () => clearTimeout(timer);
-      }, []);
+const ArrowRightIcon = (props) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
+<line x1="5" y1="12" x2="19" y2="12"></line>
+<polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+);
 
-      const StatCard = ({ value, label, icon: Icon, color }) => (
-        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300 card-hover">
-          <div className={`w-12 h-12 rounded-xl ${color} bg-opacity-10 flex items-center justify-center mb-4`}>
-            <Icon className={`w-6 h-6 ${color}`} />
-          </div>
-          <div className="text-3xl font-bold text-white mb-2">{value}</div>
-          <div className="text-gray-400">{label}</div>
-        </div>
-      );
+const StarIcon = (props) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" {...props}>
+<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+</svg>
+);
 
-      const StaffCard = ({ staff }) => (
-        <div className="group relative">
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden border border-gray-700 hover:border-gray-600 transition-all duration-300 h-full card-hover">
-            <div className="p-6">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="relative">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-red-600 to-blue-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-                  <img 
-                    src={staff.avatar} 
-                    alt={staff.name}
-                    className="relative w-16 h-16 rounded-full border-2 border-white/20"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition-colors">{staff.name}</h3>
-                  <p className="text-gray-300">{staff.role}</p>
-                  <span className="inline-block bg-gray-700 text-white text-xs px-2 py-1 rounded-full mt-1">
-                    {staff.rank}
-                  </span>
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm mb-4 line-clamp-2">{staff.bio}</p>
-              
-              <div className="flex flex-wrap gap-2 mb-4">
-                {staff.achievements.map((achievement, index) => (
-                  <span 
-                    key={index}
-                    className="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded"
-                  >
-                    {achievement}
-                  </span>
-                ))}
-              </div>
-              
-              <div className="flex justify-end">
-                <button
-                  className="text-red-400 hover:text-red-300 flex items-center text-sm font-medium transition-colors"
-                >
-                  Vedi profilo <ChevronRightIcon className="w-4 h-4 ml-1" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
+const ShieldIcon = (props) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+</svg>
+);
 
-      const PartnershipCard = ({ partner }) => (
-        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300 card-hover">
-          <div className="flex items-start space-x-4">
-            <div className="w-16 h-16 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0">
-              <img 
-                src={partner.logo} 
-                alt={partner.name}
-                className="w-10 h-10 object-contain"
-              />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-white">{partner.name}</h3>
-                <div className="flex items-center bg-gray-800 px-2 py-1 rounded-full">
-                  <StarIcon className="w-4 h-4 text-yellow-400 mr-1" />
-                  <span className="text-sm text-gray-200">{partner.rating}</span>
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm mt-2 line-clamp-2">{partner.description}</p>
-              
-              <div className="mt-4 flex items-center">
-                <a 
-                  href={partner.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-red-400 hover:text-red-300 flex items-center text-sm font-medium transition-colors"
-                >
-                  Visita il server <ArrowRightIcon className="w-4 h-4 ml-1" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
+const BriefcaseIcon = (props) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
+<rect x="2" y="7" width="20" height="14" rx="2"></rect>
+</svg>
+);
 
-      const LegalSection = ({ title, icon: Icon, children }) => (
-        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 border border-gray-700 card-hover">
-          <div className="flex items-center space-x-3 mb-5">
-            <div className="w-10 h-10 rounded-xl bg-red-600/20 flex items-center justify-center">
-              <Icon className="w-5 h-5 text-red-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-white">{title}</h3>
-          </div>
-          {children}
-        </div>
-      );
+const AwardIcon = (props) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" {...props}>
+<circle cx="12" cy="8" r="7"></circle>
+</svg>
+);
 
-      // Loading skeleton
-      const LoadingSkeleton = () => (
-        <div className="max-w-6xl mx-auto">
-          <div className="animate-pulse space-y-6">
-            <div className="h-10 bg-gray-800 rounded w-3/4 mx-auto"></div>
-            <div className="h-6 bg-gray-800 rounded w-1/2 mx-auto"></div>
-            
-            <div className="grid md:grid-cols-3 gap-6 mt-12">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="bg-gray-800 rounded-2xl p-8 h-40"></div>
-              ))}
-            </div>
-            
-            <div className="h-12 bg-gray-800 rounded w-48 mx-auto mt-8"></div>
-          </div>
-        </div>
-      );
+const App = () => {
 
-      return (
-        <div className="min-h-screen bg-black relative overflow-hidden">
-          {/* Animated Background */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center opacity-20 z-0"
-            style={{
-              backgroundImage: 'url(https://media.discordapp.net/attachments/1398349724225900624/1400229317060984984/43ab546e5d5145348c13fb390c782104.gif?ex=688be0ac&is=688a8f2c&hm=16a58c774cac6fd17b48698f85ea5611c6242e5178ee4f3d2290ba739e006ce4&=&width=576&height=432)'
-            }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/90 to-black/70"></div>
-          </div>
+const [activeSection,setActiveSection] = React.useState("home");
+const [isMenuOpen,setIsMenuOpen] = React.useState(false);
 
-          {/* Header */}
-          <header className="relative z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-16">
-                <div className="flex items-center space-x-4">
-                  <div className="logo-spin">
-                    <img 
-                      src="https://media.discordapp.net/attachments/1398349724225900624/1400229513840824423/Picsart_25-07-22_11-48-58-010.png?ex=688be0db&is=688a8f5b&hm=d603ec6cfe1d74b443e93fa657b426b4bf0cc80c172ac0f964640fdbe45c15a5&=&format=webp&quality=lossless&width=880&height=587" 
-                      alt="Legion RP Logo"
-                      className="h-12 w-auto"
-                    />
-                  </div>
-                  <div>
-                    <h1 className="text-xl font-bold gradient-text">Legion RP</h1>
-                    <p className="text-sm text-gray-300">PS4 Server | 1.450+ membri</p>
-                  </div>
-                </div>
+const staffMembers = [
 
-                {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center space-x-1">
-                  {navItems.map(item => {
-                    const Icon = item.icon;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => setActiveSection(item.id)}
-                        className={`flex items-center space-x-2 px-5 py-3 rounded-lg transition-all duration-200 text-left ${
-                          activeSection === item.id
-                            ? "bg-white/10 text-white border-r-2 border-red-500"
-                            : "text-gray-300 hover:bg-white/5 hover:text-white"
-                        }`}
-                      >
-                        <Icon className="w-5 h-5" />
-                        <span className="font-medium">{item.label}</span>
-                      </button>
-                    );
-                  })}
-                </nav>
+{
+id:1,
+name:"Saverjo_",
+role:"Server Direction®",
+rank:"Creator",
+avatar:"https://images-ext-1.discordapp.net/external/5t2w4t2sSHF-XURtaQem0dMftCz2pWwUwsLHCBlWFaM/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/631480067213492238/c09fd6afbad96af72363b0dacdf4d369.png",
+bio:"Founder e Developer del server.",
+achievements:["Ownership","Developer"]
+},
 
-                {/* Join Button - Desktop */}
-                <a
-                  href="https://discord.gg/tcKWkJPTer"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden md:block bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-2 px-5 rounded-lg transition-all duration-200 glow-border"
-                >
-                  Unisciti al Server
-                </a>
+{
+id:2,
+name:"Sibillo",
+role:"Server Direction®",
+rank:"CEO",
+avatar:"https://images-ext-1.discordapp.net/external/UoLBl_4w9sjWdJuCuILoxHemfqKm5XTLx99Mg9iTXNI/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1261436710835851379/e911ca506c77c18eb8e3579a2373a3c9.png",
+bio:"Gestisce le operazioni del server.",
+achievements:["Management"]
+},
 
-                {/* Mobile menu button */}
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="md:hidden p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
-                  aria-label="Toggle menu"
-                >
-                  {isMenuOpen ? (
-                    <ArrowRightIcon className="w-6 h-6" />
-                  ) : (
-                    <div className="space-y-1.5">
-                      <div className="w-6 h-0.5 bg-white rounded"></div>
-                      <div className="w-5 h-0.5 bg-white rounded ml-1"></div>
-                      <div className="w-6 h-0.5 bg-white rounded"></div>
-                    </div>
-                  )}
-                </button>
-              </div>
+{
+id:3,
+name:"Angelo",
+role:"Server Direction®",
+rank:"CEO",
+avatar:"https://cdn.discordapp.com/embed/avatars/0.png",
+bio:"Membro dello staff Legion RP.",
+achievements:["Support"]
+},
 
-              {/* Mobile Navigation */}
-              {isMenuOpen && (
-                <div className="md:hidden bg-black/40 backdrop-blur-md rounded-xl mt-2 overflow-hidden border border-white/10">
-                  <div className="p-4 space-y-2">
-                    {navItems.map(item => {
-                      const Icon = item.icon;
-                      return (
-                        <button
-                          key={item.id}
-                          onClick={() => setActiveSection(item.id)}
-                          className={`flex items-center space-x-3 px-4 py-3 w-full rounded-lg transition-all duration-200 ${
-                            activeSection === item.id
-                              ? "bg-white/20 text-white border-r-2 border-red-500"
-                              : "text-gray-300 hover:bg-white/10 hover:text-white"
-                          }`}
-                        >
-                          <Icon className="w-5 h-5" />
-                          <span className="font-medium">{item.label}</span>
-                        </button>
-                      );
-                    })}
-                    <a
-                      href="https://discord.gg/tcKWkJPTer"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-3 px-4 rounded-lg text-center mt-2 w-full transition-all duration-200"
-                    >
-                      Unisciti al Server
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
-          </header>
+{
+id:4,
+name:"kaaeza",
+role:"Server Direction®",
+rank:"Coordinator",
+avatar:"https://images-ext-1.discordapp.net/external/0YjDQ9o9C6rPxzbfCC_qbgoti-kRSCcSoQwzZEcaLU8/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/822411819456921650/1a66a3b0559c58711f7337346a38ec6c.png",
+bio:"Coordinator del server.",
+achievements:["Developer"]
+}
 
-          {/* Main Content */}
-          <main className="relative z-10">
-            {isLoading ? (
-              <div className="min-h-screen bg-black/50 backdrop-blur-sm p-6">
-                <LoadingSkeleton />
-              </div>
-            ) : (
-              <>
-                {activeSection === "home" && (
-                  <div className="min-h-screen bg-black/50 backdrop-blur-sm p-6">
-                    <div className="max-w-6xl mx-auto">
-                      <div className="text-center mb-12">
-                        <div className="flex justify-center mb-6 animate-pulse-slow">
-                          <img 
-                            src="https://media.discordapp.net/attachments/1398349724225900624/1400229480726925362/a_8c9fa74f76e6fded7ea8d63f23b201e0-1-1.gif?ex=688be0d3&is=688a8f53&hm=8d0ad3f4ce76e600273065695dc4e036138b7e8decb4e20c0f2944299785d3c2&=&width=183&height=183" 
-                            alt="Legion RP Logo Animation"
-                            className="h-24 w-24"
-                          />
-                        </div>
-                        <h2 className="text-4xl md:text-6xl font-bold gradient-text mb-4">
-                          Benvenuto su <span className="text-white">Legion RP</span>
-                        </h2>
-                        <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                          Il più grande server RolePlay per PS4 in Italia con oltre <span className="text-white font-bold">1.450 membri</span> attivi. 
-                          Unisciti alla nostra community e vivi un'esperienza di gioco unica!
-                        </p>
-                        
-                        <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 mb-8 border border-gray-700">
-                          <div className="grid md:grid-cols-3 gap-6">
-                            <StatCard 
-                              value="1.450+" 
-                              label="Membri Attivi" 
-                              icon={UsersIcon} 
-                              color="text-blue-500" 
-                            />
-                            <StatCard 
-                              value="24/7" 
-                              label="Server Online" 
-                              icon={ShieldIcon} 
-                              color="text-green-500" 
-                            />
-                            <StatCard 
-                              value="PS4" 
-                              label="Piattaforma" 
-                              icon={DiscordIcon} 
-                              color="text-purple-500" 
-                            />
-                          </div>
-                        </div>
+];
 
-                        <a
-                          href="https://discord.gg/tcKWkJPTer"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center space-x-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-200 glow-border"
-                        >
-                          <span>Unisciti al Server</span>
-                          <span>🚀</span>
-                        </a>
-                      </div>
+const partnerships = [
+{
+id:1,
+name:"Prime RP Bot",
+logo:"https://images-ext-1.discordapp.net/external/d_2df_jUsletkBbMLaJHbT7C6w43kwjui5WOgGoV8c4/%3Fsize%3D4096%26ignore%3Dtrue%29./https/cdn.discordapp.com/avatars/1308506841801822220/741dfdc823aeb7e2abdc0af66b480275.png",
+description:"Bot per il roleplay da Console",
+url:"https://discord.gg/68zcbdeGA4",
+rating:4.9
+}
+];
 
-                      <div className="grid md:grid-cols-2 gap-8 mt-16">
-                        <div>
-                          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-gray-600 transition-all duration-300 card-hover">
-                            <div className="flex items-center space-x-3 mb-4">
-                              <div className="w-10 h-10 rounded-xl bg-red-600/20 flex items-center justify-center">
-                                <AwardIcon className="w-5 h-5 text-red-400" />
-                              </div>
-                              <h3 className="text-2xl font-bold text-white">Chi Siamo</h3>
-                            </div>
-                            <p className="text-gray-300 leading-relaxed">
-                              Legion RP è un server RolePlay dinamico e ben organizzato dedicato ai giocatori PS4. 
-                              Offriamo un'esperienza di gioco immersiva con regole chiare, staff professionale e 
-                              una community attiva e rispettosa. Il nostro obiettivo è creare un ambiente dove 
-                              ogni giocatore possa esprimere la propria creatività attraverso il roleplay.
-                            </p>
-                          </div>
-                        </div>
+const navItems = [
+{id:"home",label:"Home",icon:HomeIcon},
+{id:"staff",label:"Staff",icon:UsersIcon},
+{id:"partnerships",label:"Partnership",icon:HandshakeIcon},
+{id:"legal",label:"Info Legali",icon:FileTextIcon}
+];
 
-                        <div>
-                          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-gray-600 transition-all duration-300 card-hover">
-                            <div className="flex items-center space-x-3 mb-4">
-                              <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center">
-                                <BriefcaseIcon className="w-5 h-5 text-blue-400" />
-                              </div>
-                              <h3 className="text-2xl font-bold text-white">Caratteristiche</h3>
-                            </div>
-                            <ul className="space-y-3 text-gray-300">
-                              <li className="flex items-start space-x-3">
-                                <span className="mt-1 text-green-400">✓</span>
-                                <span>Staff attivo 24/7 con formazione professionale</span>
-                              </li>
-                              <li className="flex items-start space-x-3">
-                                <span className="mt-1 text-green-400">✓</span>
-                                <span>Eventi settimanali organizzati e coinvolgenti</span>
-                              </li>
-                              <li className="flex items-start space-x-3">
-                                <span className="mt-1 text-green-400">✓</span>
-                                <span>Regole chiare e trasparenti con sistema di punizioni equo</span>
-                              </li>
-                              <li className="flex items-start space-x-3">
-                                <span className="mt-1 text-green-400">✓</span>
-                                <span>Sistema di governo realistico con ruoli ben definiti</span>
-                              </li>
-                              <li className="flex items-start space-x-3">
-                                <span className="mt-1 text-green-400">✓</span>
-                                <span>Supporto tecnico dedicato per risolvere problemi rapidamente</span>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
+const StatCard = ({value,label,icon:Icon,color}) => (
+<div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 border border-gray-700 card-hover">
+<div className={`w-12 h-12 rounded-xl ${color} bg-opacity-10 flex items-center justify-center mb-4`}>
+<Icon className={`w-6 h-6 ${color}`}/>
+</div>
 
-                      {/* Testimonials section */}
-                      <div className="mt-20">
-                        <h3 className="text-2xl font-bold text-white text-center mb-8">Cosa dicono i nostri membri</h3>
-                        <div className="grid md:grid-cols-3 gap-6">
-                          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 border border-gray-700 card-hover">
-                            <div className="flex items-center space-x-3 mb-4">
-                              <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">A</div>
-                              <div>
-                                <h4 className="font-bold text-white">Antonio</h4>
-                                <div className="flex">
-                                  {[...Array(5)].map((_, i) => (
-                                    <StarIcon key={i} className="w-4 h-4 text-yellow-400 star-animation" />
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                            <p className="text-gray-300 italic">"Il miglior server RP per PS4 che abbia mai provato. Staff sempre disponibile e community fantastica!"</p>
-                          </div>
-                          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 border border-gray-700 card-hover">
-                            <div className="flex items-center space-x-3 mb-4">
-                              <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">M</div>
-                              <div>
-                                <h4 className="font-bold text-white">Marco</h4>
-                                <div className="flex">
-                                  {[...Array(5)].map((_, i) => (
-                                    <StarIcon key={i} className="w-4 h-4 text-yellow-400 star-animation" />
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                            <p className="text-gray-300 italic">"Finalmente un server con regole chiare e staff professionale. Non vedo l'ora di partecipare agli eventi!"</p>
-                          </div>
-                          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 border border-gray-700 card-hover">
-                            <div className="flex items-center space-x-3 mb-4">
-                              <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">S</div>
-                              <div>
-                                <h4 className="font-bold text-white">Sofia</h4>
-                                <div className="flex">
-                                  {[...Array(5)].map((_, i) => (
-                                    <StarIcon key={i} className="w-4 h-4 text-yellow-400 star-animation" />
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                            <p className="text-gray-300 italic">"La community è fantastica e lo staff è sempre pronto ad aiutare. Consiglio a tutti di unirsi!"</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+<div className="text-3xl font-bold">{value}</div>
+<div className="text-gray-400">{label}</div>
+</div>
+);
 
-                {activeSection === "staff" && (
-                  <div className="min-h-screen bg-black/50 backdrop-blur-sm p-6">
-                    <div className="max-w-6xl mx-auto">
-                      <div className="text-center mb-12">
-                        <div className="flex items-center justify-center space-x-3 mb-4">
-                          <UsersIcon className="w-8 h-8 text-blue-500" />
-                          <h2 className="text-4xl font-bold text-white">Team di Gestione</h2>
-                        </div>
-                        <p className="text-xl text-gray-300 max-w-3xl mx-auto">Conosci i membri dello staff che rendono possibile questa esperienza unica</p>
-                      </div>
+return(
+<div className="min-h-screen relative overflow-hidden">
 
-                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {staffMembers.map(member => (
-                          <StaffCard key={member.id} staff={member} />
-                        ))}
-                      </div>
+<div
+className="absolute inset-0 bg-cover bg-center"
+style={{
+backgroundImage:"url('https://cdn.discordapp.com/attachments/1501629649942478989/1502620001323061268/image00002.png_3-1.webp?ex=6a005f6d&is=69ff0ded&hm=4673be0df5cb9be9fd4985a738c5529f6d5f4f45666534720952f52566e17366&')"
+}}
+>
+<div className="bg-overlay"></div>
+</div>
 
-                      <div className="mt-16 bg-gradient-to-r from-gray-900/80 to-gray-800/80 backdrop-blur-md rounded-2xl p-8 border border-gray-700">
-                        <div className="text-center max-w-3xl mx-auto">
-                          <div className="flex items-center justify-center space-x-3 mb-4">
-                            <BriefcaseIcon className="w-6 h-6 text-blue-500" />
-                            <h3 className="text-2xl font-bold text-white">Vuoi Diventare Staff?</h3>
-                          </div>
-                          <p className="text-gray-300 mb-6">
-                            Stiamo sempre cercando persone motivate, appassionate e con esperienza nel mondo del RolePlay 
-                            per unirsi al nostro team. Offriamo formazione completa e un ambiente di lavoro collaborativo.
-                          </p>
-                          <div className="flex flex-wrap justify-center gap-4">
-                            <a
-                              href="https://discord.gg/tcKWkJPTer"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 px-6 rounded-full transition-all duration-200 glow-border"
-                            >
-                              <span>Richiedi Modulo</span>
-                              <span>📄</span>
-                            </a>
-                            <a
-                              href="#"
-                              onClick={() => setActiveSection("staff")}
-                              className="inline-flex items-center space-x-2 border-2 border-gray-600 hover:border-gray-500 text-gray-300 hover:text-white font-bold py-3 px-6 rounded-full transition-all duration-200"
-                            >
-                              <span>Requisiti</span>
-                              <span>ℹ️</span>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+<header className="relative z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
 
-                {activeSection === "partnerships" && (
-                  <div className="min-h-screen bg-black/50 backdrop-blur-sm p-6">
-                    <div className="max-w-6xl mx-auto">
-                      <div className="text-center mb-12">
-                        <div className="flex items-center justify-center space-x-3 mb-4">
-                          <HandshakeIcon className="w-8 h-8 text-green-500" />
-                          <h2 className="text-4xl font-bold text-white">Partnership</h2>
-                        </div>
-                        <p className="text-xl text-gray-300 max-w-3xl mx-auto">Collaboriamo con le migliori community di RolePlay per offrire esperienze uniche ai nostri membri</p>
-                      </div>
+<div className="max-w-7xl mx-auto px-4">
 
-                      <div className="grid md:grid-cols-2 gap-8 mb-12">
-                        {partnerships.map(partner => (
-                          <PartnershipCard key={partner.id} partner={partner} />
-                        ))}
-                      </div>
+<div className="flex items-center justify-between h-16">
 
-                      <div className="bg-gradient-to-r from-red-900/30 to-blue-900/30 backdrop-blur-md rounded-2xl p-8 border border-gray-700">
-                        <div className="text-center max-w-2xl mx-auto">
-                          <div className="flex items-center justify-center space-x-3 mb-4">
-                            <HandshakeIcon className="w-6 h-6 text-green-500" />
-                            <h3 className="text-2xl font-bold text-white">Diventa nostro Partner</h3>
-                          </div>
-                          <p className="text-gray-300 mb-6">
-                            Se gestisci una community di RolePlay e sei interessato a una partnership con Legion RP, 
-                            contattaci tramite Discord. Offriamo eventi congiunti, promozione reciproca e molto altro.
-                          </p>
-                          <div className="flex flex-wrap justify-center gap-4">
-                            <a
-                              href="https://discord.gg/tcKWkJPTer"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3 px-6 rounded-full transition-all duration-200 glow-border"
-                            >
-                              <span>Contattaci</span>
-                              <span>💬</span>
-                            </a>
-                            <a
-                              href="#"
-                              onClick={() => setActiveSection("partnerships")}
-                              className="inline-flex items-center space-x-2 border-2 border-gray-600 hover:border-gray-500 text-gray-300 hover:text-white font-bold py-3 px-6 rounded-full transition-all duration-200"
-                            >
-                              <span>Linee Guida</span>
-                              <span>📑</span>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+<div className="flex items-center gap-4">
 
-                {activeSection === "legal" && (
-                  <div className="min-h-screen bg-black/50 backdrop-blur-sm p-6">
-                    <div className="max-w-4xl mx-auto">
-                      <div className="text-center mb-12">
-                        <div className="flex items-center justify-center space-x-3 mb-4">
-                          <FileTextIcon className="w-8 h-8 text-purple-500" />
-                          <h2 className="text-4xl font-bold text-white">Informazioni Legali</h2>
-                        </div>
-                        <p className="text-xl text-gray-300 max-w-2xl mx-auto">Dettagli legali e termini del nostro progetto</p>
-                      </div>
+<div className="logo-spin">
+<img
+src="https://media.discordapp.net/attachments/1501629649942478989/1502620000538595458/a_8c9fa74f76e6fded7ea8d63f23b201e0-1-2.gif?ex=6a005f6d&is=69ff0ded&hm=4ed9db59b7236e8831a9980d71aad2454597bfe05bc77213f4ddbbf023ea2979&=&width=183&height=183"
+className="h-12 w-12 rounded-full"
+alt="logo"
+/>
+</div>
 
-                      <div className="space-y-8">
-                        <LegalSection title="Informazioni di Contatto" icon={BriefcaseIcon}>
-                          <div className="grid md:grid-cols-2 gap-6">
-                            <div>
-                              <h4 className="text-lg font-semibold text-gray-400 mb-2">Proprietario</h4>
-                              <p className="text-white">{legalInfo.owner}</p>
-                            </div>
-                            <div>
-                              <h4 className="text-lg font-semibold text-gray-400 mb-2">Indirizzo</h4>
-                              <p className="text-white">{legalInfo.address}</p>
-                            </div>
-                            <div>
-                              <h4 className="text-lg font-semibold text-gray-400 mb-2">Partita IVA</h4>
-                              <p className="text-white">{legalInfo.vat}</p>
-                            </div>
-                            <div>
-                              <h4 className="text-lg font-semibold text-gray-400 mb-2">Piattaforma</h4>
-                              <p className="text-white">PlayStation 4</p>
-                            </div>
-                          </div>
-                        </LegalSection>
+<div>
+<h1 className="text-xl font-bold gradient-text">Legion RP</h1>
+<p className="text-sm text-gray-300">PS4 Server | 1600+ membri</p>
+</div>
 
-                        <LegalSection title="Termini e Condizioni" icon={FileTextIcon}>
-                          <p className="text-gray-300 leading-relaxed mb-4">
-                            {legalInfo.terms}
-                          </p>
-                          <p className="text-gray-300 leading-relaxed">
-                            Il server Legion RP è un progetto amatoriale gestito da una community di giocatori appassionati. 
-                            Non siamo affiliati, sponsorizzati o partner di Rockstar Games, Take-Two Interactive Software, Inc., 
-                            o di qualsiasi altra società che detiene i diritti su Grand Theft Auto.
-                          </p>
-                        </LegalSection>
+</div>
 
-                        <LegalSection title="Privacy Policy" icon={ShieldIcon}>
-                          <p className="text-gray-300 leading-relaxed mb-4">
-                            {legalInfo.privacy}
-                          </p>
-                          <p className="text-gray-300 leading-relaxed">
-                            I dati personali raccolti (nome utente, ID Discord) sono utilizzati esclusivamente per la gestione 
-                            del server, la moderazione della community e il miglioramento dell'esperienza di gioco. Non vendiamo 
-                            né condividiamo i dati personali con terze parti.
-                          </p>
-                        </LegalSection>
+<nav className="hidden md:flex items-center gap-2">
 
-                        <LegalSection title="Disclaimer" icon={AwardIcon}>
-                          <p className="text-gray-300 leading-relaxed">
-                            {legalInfo.disclaimer}
-                          </p>
-                        </LegalSection>
+{navItems.map(item=>{
 
-                        <div className="bg-gradient-to-r from-gray-900/80 to-gray-800/80 backdrop-blur-md rounded-2xl p-8 border border-gray-700 text-center">
-                          <p className="text-gray-400 text-sm">
-                            {legalInfo.copyright}
-                          </p>
-                          <p className="text-gray-500 text-xs mt-2">
-                            Questo sito web è un progetto non ufficiale e non affiliato a Rockstar Games.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </main>
+const Icon = item.icon;
 
-          {/* Footer */}
-          <footer className="relative z-10 bg-black/40 backdrop-blur-md border-t border-white/10 mt-16">
-            <div className="max-w-6xl mx-auto px-4 py-10">
-              <div className="grid md:grid-cols-4 gap-8">
-                <div className="md:col-span-2">
-                  <div className="flex items-center space-x-4 mb-4">
-                    <img 
-                      src="https://media.discordapp.net/attachments/1398349724225900624/1400229513840824423/Picsart_25-07-22_11-48-58-010.png?ex=688be0db&is=688a8f5b&hm=d603ec6cfe1d74b443e93fa657b426b4bf0cc80c172ac0f964640fdbe45c15a5&=&format=webp&quality=lossless&width=880&height=587" 
-                      alt="Legion RP Logo"
-                      className="h-12 w-auto"
-                    />
-                    <h3 className="text-xl font-bold gradient-text">Legion RP</h3>
-                  </div>
-                  <p className="text-gray-400 mb-4 max-w-md">
-                    Il più grande server RolePlay per PS4 in Italia con oltre 1.450 membri attivi. Unisciti alla nostra community e vivi un'esperienza di gioco unica!
-                  </p>
-                  <div className="flex space-x-4">
-                    <a
-                      href="https://discord.gg/tcKWkJPTer"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-red-600 transition-colors"
-                    >
-                      <DiscordIcon className="w-5 h-5" />
-                    </a>
-                  </div>
-                </div>
-                
-                <div>
-                  <h4 className="text-lg font-bold text-white mb-4">Navigazione</h4>
-                  <ul className="space-y-2">
-                    {navItems.map(item => {
-                      const Icon = item.icon;
-                      return (
-                        <li key={item.id}>
-                          <button
-                            onClick={() => setActiveSection(item.id)}
-                            className="text-gray-400 hover:text-white transition-colors flex items-center"
-                          >
-                            <Icon className="w-4 h-4 mr-2" />
-                            {item.label}
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="text-lg font-bold text-white mb-4">Legal</h4>
-                  <ul className="space-y-2">
-                    <li>
-                      <button
-                        onClick={() => setActiveSection("legal")}
-                        className="text-gray-400 hover:text-white transition-colors"
-                      >
-                        Termini e Condizioni
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => setActiveSection("legal")}
-                        className="text-gray-400 hover:text-white transition-colors"
-                      >
-                        Privacy Policy
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => setActiveSection("legal")}
-                        className="text-gray-400 hover:text-white transition-colors"
-                      >
-                        Disclaimer
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="border-t border-gray-800 mt-10 pt-6 text-center">
-                <p className="text-gray-500 text-sm">
-                  © 2025 Legion RP. Tutti i diritti riservati.
-                </p>
-                <p className="text-gray-600 text-xs mt-1">
-                  Non affiliato con Rockstar Games, Take-Two Interactive Software, Inc. o Grand Theft Auto.
-                </p>
-              </div>
-            </div>
-          </footer>
-        </div>
-      );
-    };
+return(
+<button
+key={item.id}
+onClick={()=>setActiveSection(item.id)}
+className={`flex items-center gap-2 px-5 py-3 rounded-lg transition ${
+activeSection===item.id
+? "bg-white/10 border-r-2 border-red-500 text-white"
+: "text-gray-300 hover:bg-white/5"
+}`}
+>
+<Icon className="w-5 h-5"/>
+{item.label}
+</button>
+)
 
-    ReactDOM.render(<App />, document.getElementById('root'));
-  </script>
+})}
+
+</nav>
+
+<a
+href="https://discord.gg/tcKWkJPTer"
+target="_blank"
+className="hidden md:block bg-gradient-to-r from-red-600 to-red-700 px-5 py-2 rounded-lg font-semibold glow-border"
+>
+Unisciti
+</a>
+
+<button
+className="md:hidden text-white"
+onClick={()=>setIsMenuOpen(!isMenuOpen)}
+>
+☰
+</button>
+
+</div>
+
+{isMenuOpen && (
+<div className="md:hidden pb-4">
+
+{navItems.map(item=>{
+
+const Icon = item.icon;
+
+return(
+<button
+key={item.id}
+onClick={()=>{
+setActiveSection(item.id);
+setIsMenuOpen(false);
+}}
+className="flex items-center gap-3 w-full py-3 text-left text-gray-300"
+>
+<Icon className="w-5 h-5"/>
+{item.label}
+</button>
+)
+
+})}
+
+</div>
+)}
+
+</div>
+
+</header>
+
+<main className="relative z-10 p-6">
+
+{activeSection==="home" && (
+
+<div className="max-w-6xl mx-auto">
+
+<div className="text-center mb-16">
+
+<div className="flex justify-center mb-6 animate-pulse-slow">
+<img
+src="https://media.discordapp.net/attachments/1501629649942478989/1502620000538595458/a_8c9fa74f76e6fded7ea8d63f23b201e0-1-2.gif?ex=6a005f6d&is=69ff0ded&hm=4ed9db59b7236e8831a9980d71aad2454597bfe05bc77213f4ddbbf023ea2979&=&width=183&height=183"
+className="h-28 w-28"
+/>
+</div>
+
+<h2 className="text-5xl md:text-6xl font-bold mb-5">
+<span className="gradient-text">Legion RP</span>
+</h2>
+
+<p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+Il più grande server RolePlay PS4 in Italia con oltre
+<span className="text-white font-bold"> 1600+ membri </span>
+attivi.
+</p>
+
+<div className="grid md:grid-cols-3 gap-6 mb-10">
+
+<StatCard
+value="1600+"
+label="Membri Attivi"
+icon={UsersIcon}
+color="text-blue-500"
+/>
+
+<StatCard
+value="24/7"
+label="Server Online"
+icon={ShieldIcon}
+color="text-green-500"
+/>
+
+<StatCard
+value="PS4"
+label="Piattaforma"
+icon={AwardIcon}
+color="text-purple-500"
+/>
+
+</div>
+
+<a
+href="https://discord.gg/tcKWkJPTer"
+target="_blank"
+className="inline-flex items-center gap-3 bg-gradient-to-r from-red-600 to-red-700 px-8 py-4 rounded-full font-bold text-lg glow-border"
+>
+Unisciti al Server 🚀
+</a>
+
+</div>
+
+<div className="grid md:grid-cols-2 gap-8">
+
+<div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 border border-gray-700 card-hover">
+<div className="flex items-center gap-3 mb-5">
+<AwardIcon className="w-6 h-6 text-red-500"/>
+<h3 className="text-2xl font-bold">Chi Siamo</h3>
+</div>
+
+<p className="text-gray-300 leading-relaxed">
+Legion RP è un server RolePlay dedicato ai giocatori PS4.
+Offriamo un'esperienza immersiva con community attiva,
+staff professionale ed eventi esclusivi.
+</p>
+</div>
+
+<div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 border border-gray-700 card-hover">
+
+<div className="flex items-center gap-3 mb-5">
+<BriefcaseIcon className="w-6 h-6 text-blue-500"/>
+<h3 className="text-2xl font-bold">Caratteristiche</h3>
+</div>
+
+<ul className="space-y-3 text-gray-300">
+
+<li>✅ Staff attivo 24/7</li>
+<li>✅ Eventi settimanali</li>
+<li>✅ Community organizzata</li>
+<li>✅ Supporto rapido</li>
+<li>✅ Esperienza RP realistica</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+)}
+
+{activeSection==="staff" && (
+
+<div className="max-w-6xl mx-auto">
+
+<div className="text-center mb-12">
+<h2 className="text-5xl font-bold mb-3">Team Staff</h2>
+<p className="text-gray-300">
+Conosci lo staff di Legion RP
+</p>
+</div>
+
+<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+{staffMembers.map(staff=>(
+
+<div
+key={staff.id}
+className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 border border-gray-700 card-hover"
+>
+
+<div className="flex items-center gap-4 mb-5">
+
+<img
+src={staff.avatar}
+className="w-16 h-16 rounded-full border-2 border-white/20"
+alt={staff.name}
+/>
+
+<div>
+<h3 className="text-xl font-bold">{staff.name}</h3>
+<p className="text-gray-400">{staff.role}</p>
+<span className="inline-block mt-1 bg-gray-700 text-xs px-2 py-1 rounded-full">
+{staff.rank}
+</span>
+</div>
+
+</div>
+
+<p className="text-gray-300 mb-4">
+{staff.bio}
+</p>
+
+<div className="flex flex-wrap gap-2">
+
+{staff.achievements.map((a,i)=>(
+<span
+key={i}
+className="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded"
+>
+{a}
+</span>
+))}
+
+</div>
+
+</div>
+
+))}
+
+</div>
+
+</div>
+
+)}
+
+{activeSection==="partnerships" && (
+
+<div className="max-w-5xl mx-auto">
+
+<div className="text-center mb-12">
+<h2 className="text-5xl font-bold mb-3">Partnership</h2>
+<p className="text-gray-300">
+Le nostre collaborazioni ufficiali
+</p>
+</div>
+
+<div className="grid md:grid-cols-2 gap-8">
+
+{partnerships.map(partner=>(
+
+<div
+key={partner.id}
+className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 border border-gray-700 card-hover"
+>
+
+<div className="flex items-start gap-4">
+
+<img
+src={partner.logo}
+className="w-16 h-16 rounded-xl"
+alt={partner.name}
+/>
+
+<div className="flex-1">
+
+<div className="flex items-center justify-between">
+
+<h3 className="text-xl font-bold">
+{partner.name}
+</h3>
+
+<div className="flex items-center gap-1">
+<StarIcon className="w-4 h-4 text-yellow-400"/>
+<span>{partner.rating}</span>
+</div>
+
+</div>
+
+<p className="text-gray-400 mt-2">
+{partner.description}
+</p>
+
+<a
+href={partner.url}
+target="_blank"
+className="inline-flex items-center gap-2 text-red-400 mt-4 hover:text-red-300"
+>
+Visita <ArrowRightIcon className="w-4 h-4"/>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+))}
+
+</div>
+
+</div>
+
+)}
+
+{activeSection==="legal" && (
+
+<div className="max-w-4xl mx-auto">
+
+<div className="text-center mb-12">
+<h2 className="text-5xl font-bold mb-3">
+Informazioni Legali
+</h2>
+<p className="text-gray-300">
+Dettagli e disclaimer del progetto
+</p>
+</div>
+
+<div className="space-y-8">
+
+<div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 border border-gray-700">
+
+<h3 className="text-2xl font-bold mb-4">
+Termini e Condizioni
+</h3>
+
+<p className="text-gray-300 leading-relaxed">
+Legion RP è un progetto non affiliato a Rockstar Games o Take-Two Interactive.
+Tutti i marchi appartengono ai rispettivi proprietari.
+</p>
+
+</div>
+
+<div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 border border-gray-700">
+
+<h3 className="text-2xl font-bold mb-4">
+Privacy Policy
+</h3>
+
+<p className="text-gray-300 leading-relaxed">
+I dati raccolti vengono utilizzati esclusivamente per la gestione del server Discord
+e della community.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+)}
+
+</main>
+
+<footer className="relative z-10 bg-black/40 backdrop-blur-md border-t border-white/10 mt-20">
+
+<div className="max-w-6xl mx-auto px-6 py-10">
+
+<div className="flex flex-col md:flex-row items-center justify-between gap-6">
+
+<div className="flex items-center gap-4">
+
+<img
+src="https://media.discordapp.net/attachments/1501629649942478989/1502620000538595458/a_8c9fa74f76e6fded7ea8d63f23b201e0-1-2.gif?ex=6a005f6d&is=69ff0ded&hm=4ed9db59b7236e8831a9980d71aad2454597bfe05bc77213f4ddbbf023ea2979&=&width=183&height=183"
+className="w-12 h-12 rounded-full"
+/>
+
+<div>
+<h3 className="text-xl font-bold gradient-text">
+Legion RP
+</h3>
+
+<p className="text-gray-400 text-sm">
+PS4 Roleplay Server
+</p>
+</div>
+
+</div>
+
+<a
+href="https://discord.gg/tcKWkJPTer"
+target="_blank"
+className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-3 rounded-xl font-semibold glow-border"
+>
+Entra nel Discord
+</a>
+
+</div>
+
+<div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 text-sm">
+© 2025 Legion RP - Tutti i diritti riservati.
+</div>
+
+</div>
+
+</footer>
+
+</div>
+)
+}
+
+ReactDOM.render(<App/>,document.getElementById("root"));
+
+</script>
 </body>
 </html>
